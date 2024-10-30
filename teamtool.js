@@ -7,7 +7,7 @@ function foo(){
 
                 function print(res) {
                     const el = window.document.getElementById('output');
-                    el.innerHTML = `Solution: LP \n\n ${JSON.stringify(res, null, 2)}`;
+                    el.innerHTML = res; //`Solution: LP \n\n ${JSON.stringify(res, null, 2)}`;
                 };
 
                 const window_size = window.document.getElementById('window_size').value
@@ -414,19 +414,22 @@ function foo(){
 
                 lp.objective.vars[idx].coef /= 2;
 	    }
-	    
+
+            var out = "";
+    
 	    if(max_results.length == 1){
 		//console.log(max_results[0]);
-		console.log(Object.keys(driver_points).filter((k) => max_results[0].result.vars[k] == 1));
-		console.log(Object.keys(team_points).filter((k) => max_results[0].result.vars[k] == 1));
-		console.log(max_results[0].result.z + ' is the points');
-		console.log(max_2xs[0] + ' is the 2x');
+		out += ('<p>' + Object.keys(driver_points).filter((k) => max_results[0].result.vars[k] == 1) + '</p>');
+		out += ('<p>' + Object.keys(team_points).filter((k) => max_results[0].result.vars[k] == 1) + '</p>');
+		out += ('<p>' + max_results[0].result.z + ' is the points</p>');
+		out += ('<p>' + max_2xs[0] + ' is the 2x</p>');
 	    } else {
-		console.log("todo: handle multiple optimal");
+		out += "todo: handle multiple optimal";
 	    }
 
-
+	    print(out);
 	    
+    
                 //console.log(results);
 
                 //console.log(await glpk.solve(lp, glpk.GLP_MSG_DBG));
