@@ -115,12 +115,13 @@ for(let window_size = 1; window_size <= num_races; window_size += 1){
 	lp.generals.push(key)
     }
     
-    var results = Array(20);
-    
+    var num_drivers = Object.keys(driver_points).length;
+    var results = Array(num_drivers);
+
     var maxval = -1;
     var max_2xs = []
     var max_results = [];
-    for(let idx = 0; idx < 20; idx += 1){
+    for(let idx = 0; idx < num_drivers; idx += 1){
 	lp.objective.vars[idx].coef *= 2;
 	var result = await glpk.solve(lp, opt);
 	
