@@ -2,84 +2,101 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="./topnav.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <div id="intervalpicker" class="us-form darktest">
-      <table>
-	<tr>
-	  <td class="unwrap">
-	    <label for="last_race">First race:</label>
-	    
-	    <select name="first_race" id="first_race">
-	    </select>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="unwrap">
-	    <label for="last_race">Last race:</label>
-	    
-	    <select name="last_race" id="last_race">
-	    </select>
-	  </td>
-	</tr>
-      </table>
+    
+    <!-- Top Navigation Menu -->
+    <div class="topnav">
+      <a href="" class="active"><h1>Team Optimizer</h1></a>
+      <!-- Navigation links (hidden by default) -->
+      <div id="myLinks">
+	<a href="#about">About</a>
+	<a href="#disclaimer">Disclaimer</a>
+      </div>
+      <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+	<i class="fa fa-bars"></i>
+      </a>
     </div>
-    <div id="intervalperformance"></div>
-    <div id="teampicker" class="us-form darktest">
-      <table>
-	<tr>
-	  <td class="unwrap">
-	    <label for="second_driver"></label>
-	    
-	    <select name="second_driver" id="second_driver">
-	    </select>
-	  </td>
-	  <td class="unwrap">
-	    <label for="third_driver"></label>
-	    
-	    <select name="third_driver" id="third_driver">
-	    </select>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="unwrap">
-	    <label for="fourth_driver"></label>
-	    
-	    <select name="fourth_driver" id="fourth_driver">
-	    </select>
-	  </td>
-	  <td class="unwrap">
-	    <label for="fifth_driver"></label>
-	    
-	    <select name="fifth_driver" id="fifth_driver">
-	    </select>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="unwrap" colspan="2" style="text-align: center;">
-	    <label for="2x_driver">2x:</label>
-	    <select name="2x_driver" id="2x_driver">
-	    </select>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="unwrap">
-	    <label for="first_team"></label>
-	    
-	    <select name="first_team" id="first_team">
-	    </select>
-	  </td>
-	  <td class="unwrap">
-	    <label for="second_team"></label>
-	  
-	  <select name="second_team" id="second_team">
-	  </select>
-	  </td>
-	</tr>
-      </table>
+    <div class="content">
+      <p>This page currently uses 2024 points/price data, and reflects results through the Mexico City Grand Prix. Please pick the window of races for which to calculate points and price</p>
+      <div id="intervalpicker" class="us-form darktest">
+	<table>
+	  <tr>
+	    <td class="unwrap">
+	      <label for="last_race">First race:</label>
+	      
+	      <select name="first_race" id="first_race">
+	      </select>
+	    </td>
+	    <td class="unwrap">
+	      <label for="last_race">Last race:</label>
+	      
+	      <select name="last_race" id="last_race">
+	      </select>
+	    </td>
+	  </tr>
+	</table>
+      </div>
+      <div id="intervalperformance"></div>
+      <div id="teampicker" class="us-form darktest">
+	<table>
+	  <tr>
+	    <td class="unwrap">
+	      <label for="second_driver"></label>
+	      
+	      <select name="second_driver" id="second_driver">
+	      </select>
+	    </td>
+	    <td class="unwrap">
+	      <label for="third_driver"></label>
+	      
+	      <select name="third_driver" id="third_driver">
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="unwrap">
+	      <label for="fourth_driver"></label>
+	      
+	      <select name="fourth_driver" id="fourth_driver">
+	      </select>
+	    </td>
+	    <td class="unwrap">
+	      <label for="fifth_driver"></label>
+	      
+	      <select name="fifth_driver" id="fifth_driver">
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="unwrap" colspan="2" style="text-align: center;">
+	      <label for="2x_driver">2x:</label>
+	      <select name="2x_driver" id="2x_driver">
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="unwrap">
+	      <label for="first_team"></label>
+	      
+	      <select name="first_team" id="first_team">
+	      </select>
+	    </td>
+	    <td class="unwrap">
+	      <label for="second_team"></label>
+	      
+	      <select name="second_team" id="second_team">
+	      </select>
+	    </td>
+	  </tr>
+	</table>
+      </div>
+      <div id="teamperformance"></div>
+      <script type="module" src="teamtool.js"></script>
     </div>
-    <div id="teamperformance"></div>
-    <script type="module" src="teamtool.js"></script>
   </body>
 </html>

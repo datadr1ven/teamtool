@@ -52,7 +52,7 @@ async function fillOptimal(first_race, last_race){
 	const ar = await construct_and_solve_linear_program(driver_points, team_points, driver_prices, team_prices, race_indice, race_indice[0], 5.0, 2.0, 100.0);
 	const max_results = ar[0];
 	const max_2xs = ar[1];
-	document.getElementById('intervalperformance').innerHTML = '<p> An optimal team is ' + format_choice(max_results[0],max_2xs[0]) + ', which would have totaled ' + max_results[0].result.z + ' points<p>';
+	document.getElementById('intervalperformance').innerHTML = '<p> The optimal team over this race interval is</p><p> ' + format_choice(max_results[0],max_2xs[0]) + '</p><p> for a total of <b>' + max_results[0].result.z + '</b> points<p>';
 	
 	let et = extract_team(max_results[0],max_2xs[0]);
 	
@@ -135,24 +135,26 @@ async function fillOptimal(first_race, last_race){
 	const drivers_uniq = [...new Set([a,b,c,d,e])];
 	const teams_uniq = [...new Set([f,g])];
 	
-	let txt = 'Whereas, this chosen team ';
+	let txt = '<p>This team choice ';
 	
 	if ( drivers_uniq.length == 5 && teams_uniq.length == 2 ){
 	    
 	    const total_price = driver_prices[a][price_index] + driver_prices[b][price_index] + driver_prices[c][price_index] + driver_prices[d][price_index] + driver_prices[e][price_index]+ team_prices[f][price_index] + team_prices[g][price_index];
 	    
-	    txt += 'totals $' + total_price.toFixed(2) + 'M';
+	    txt += 'costs <b>$' + total_price.toFixed(2) + 'M</b><p>';
 	    
 	    if (total_price <= 100.0){
-		txt += ' and scores ' + score_team(a, b, c, d, e, f, g, h, i) + ' points';
+		const team_score = score_team(a,b,c,d,e,f,g,h,i);
+		txt += '<p>and scores <b>' + team_score + '</b> points</p>';
+		txt += '<p>which is <b>' + ((team_score/max_results[0].result.z).toFixed(2) * 100) + '%</b> of possible points</p>';
 	    } else {
-		txt += ', which exceeds price cap';
+		txt += 'and thus <b>exceeds</b> price cap</p>';
 	    }
 	} else {
-	    txt += 'is an invalid team (check for duplicates)';
+	    txt += 'is invalid (duplicate)</p>';
 	}
 	
-	document.getElementById('teamperformance').innerHTML = '<p>' + txt + '</p>';
+	document.getElementById('teamperformance').innerHTML = txt;
 	
     }
     
@@ -452,7 +454,7 @@ function print_choice(res){
 }
 
 function format_choice(res,two_x){
-    return '[' + Object.keys(driver_points).filter((k) => res.result.vars[k] == 1).map(x => x == two_x ? x + '(2x)' : x) + '] / [' + Object.keys(team_points).filter((k) => res.result.vars[k] == 1) + ']';
+    return '<b>[' + Object.keys(driver_points).filter((k) => res.result.vars[k] == 1).map(x => x == two_x ? x + '(2x)' : x) + '] / [' + Object.keys(team_points).filter((k) => res.result.vars[k] == 1) + ']</b>';
 }
 
 var optimals = Array(num_races);
