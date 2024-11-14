@@ -218,7 +218,7 @@ document.getElementById('second_team').addEventListener('change', (event) => {
 
 fillOptimal(0, presumptive_number_of_races - 1);
 
-
+/*
 var thetable = '<tr><th>&nbsp;</th>';
 var idx = 0;
 
@@ -271,7 +271,7 @@ for (let window = 1; window < num_races; window += 1){
 }
 
 window.document.getElementById('thetable').innerHTML = thetable;
-
+*/
 //parameters
 // start_race
 // end_race
@@ -457,6 +457,7 @@ function format_choice(res,two_x){
     return '<b>[' + Object.keys(driver_points).filter((k) => res.result.vars[k] == 1).map(x => x == two_x ? x + '(2x)' : x) + '] / [' + Object.keys(team_points).filter((k) => res.result.vars[k] == 1) + ']</b>';
 }
 
+/*
 var optimals = Array(num_races);
 
 for(let col = 0; col < num_races; col += 1){
@@ -497,6 +498,6 @@ for (let informed_window = 1; informed_window < num_races; informed_window += 1)
 
     }
 }
-
+*/
 
 
