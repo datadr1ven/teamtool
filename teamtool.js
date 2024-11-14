@@ -23,6 +23,142 @@ function homogeneous(keyed_lists, descrip){
 console.log(descrip + " has homogeneous lengths: " + is_homogeneous + ", with at least one having length: " + the_length);
 }
 
+function fillSelect(selectId, data, index_label) {
+    const selectElement = document.getElementById(selectId);
+    
+    // Clear existing options
+    selectElement.innerHTML = '';
+    
+    // Add new options
+    data.forEach((item, index) => {
+	const option = document.createElement('option');
+	option.value = index;
+	option.text = (index_label ? (index+1) + ". " : "") + item;
+	selectElement.appendChild(option);
+    });
+}
+
+function extract_team(res, two_x){
+    let rv = Array(3);
+    rv[0] = [two_x];
+    rv[1] = Object.keys(driver_points).filter((k) => res.result.vars[k] == 1).filter((kk) => kk != two_x);
+    rv[2] = Object.keys(team_points).filter((k) => res.result.vars[k] == 1);
+    return rv;
+}
+
+async function fillOptimal(first_race, last_race){
+    if (last_race > first_race){
+	const race_indice = [...Array(last_race-first_race+1).keys()].map(x => x + first_race);
+	const ar = await construct_and_solve_linear_program(driver_points, team_points, driver_prices, team_prices, race_indice, race_indice[0], 5.0, 2.0, 100.0);
+	const max_results = ar[0];
+	const max_2xs = ar[1];
+	document.getElementById('intervalperformance').innerHTML = '<p> An optimal team is ' + format_choice(max_results[0],max_2xs[0]) + ', which would have totaled ' + max_results[0].result.z + ' points<p>';
+	
+	let et = extract_team(max_results[0],max_2xs[0]);
+	
+	const price_index = document.getElementById('first_race').selectedIndex;
+	
+	//2x
+	let previously_selected = document.getElementById('2x_driver').selectedIndex;
+	fillSelect('2x_driver', Object.keys(driver_points).map(x => x + ' ($' + driver_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('2x_driver').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('2x_driver').selectedIndex = Object.keys(driver_points).indexOf(et[0][0]);
+	}	
+	
+	//second_driver
+	previously_selected = document.getElementById('second_driver').selectedIndex;
+	fillSelect('second_driver', Object.keys(driver_points).map(x => x + ' ($' + driver_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('second_driver').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('second_driver').selectedIndex = Object.keys(driver_points).indexOf(et[1][0]);
+	}	
+	
+	//third_driver
+	previously_selected = document.getElementById('third_driver').selectedIndex;
+	fillSelect('third_driver', Object.keys(driver_points).map(x => x + ' ($' + driver_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('third_driver').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('third_driver').selectedIndex = Object.keys(driver_points).indexOf(et[1][1]);
+	}	
+	
+	//fourth_driver
+	previously_selected = document.getElementById('fourth_driver').selectedIndex;
+	fillSelect('fourth_driver', Object.keys(driver_points).map(x => x + ' ($' + driver_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('fourth_driver').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('fourth_driver').selectedIndex = Object.keys(driver_points).indexOf(et[1][2]);
+	}	
+	
+	//fifth_driver
+	previously_selected = document.getElementById('fifth_driver').selectedIndex;
+	fillSelect('fifth_driver', Object.keys(driver_points).map(x => x + ' ($' + driver_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('fifth_driver').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('fifth_driver').selectedIndex = Object.keys(driver_points).indexOf(et[1][3]);
+	}	
+	
+	//first_team
+	previously_selected = document.getElementById('first_team').selectedIndex;
+	fillSelect('first_team', Object.keys(team_points).map(x => x + ' ($' + team_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('first_team').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('first_team').selectedIndex = Object.keys(team_points).indexOf(et[2][0]);
+	}	
+	
+	//second_team
+	previously_selected = document.getElementById('second_team').selectedIndex;
+	fillSelect('second_team', Object.keys(team_points).map(x => x + ' ($' + team_prices[x][price_index] + 'M)'));
+	if (previously_selected > -1){
+	    document.getElementById('second_team').selectedIndex = previously_selected;
+	} else {
+	    document.getElementById('second_team').selectedIndex = Object.keys(team_points).indexOf(et[2][1]);
+	}	
+	
+	
+	const a = Object.keys(driver_points)[document.getElementById('2x_driver').selectedIndex];
+	const b = Object.keys(driver_points)[document.getElementById('second_driver').selectedIndex];
+	const c = Object.keys(driver_points)[document.getElementById('third_driver').selectedIndex];
+	const d = Object.keys(driver_points)[document.getElementById('fourth_driver').selectedIndex];
+	const e = Object.keys(driver_points)[document.getElementById('fifth_driver').selectedIndex];
+	const f = Object.keys(team_points)[document.getElementById('first_team').selectedIndex];
+	const g = Object.keys(team_points)[document.getElementById('second_team').selectedIndex];
+	const h = document.getElementById('first_race').selectedIndex;
+	const i = document.getElementById('last_race').selectedIndex;
+	
+	const drivers_uniq = [...new Set([a,b,c,d,e])];
+	const teams_uniq = [...new Set([f,g])];
+	
+	let txt = 'Whereas, this chosen team ';
+	
+	if ( drivers_uniq.length == 5 && teams_uniq.length == 2 ){
+	    
+	    const total_price = driver_prices[a][price_index] + driver_prices[b][price_index] + driver_prices[c][price_index] + driver_prices[d][price_index] + driver_prices[e][price_index]+ team_prices[f][price_index] + team_prices[g][price_index];
+	    
+	    txt += 'totals $' + total_price.toFixed(2) + 'M';
+	    
+	    if (total_price <= 100.0){
+		txt += ' and scores ' + score_team(a, b, c, d, e, f, g, h, i) + ' points';
+	    } else {
+		txt += ', which exceeds price cap';
+	    }
+	} else {
+	    txt += 'is an invalid team (check for duplicates)';
+	}
+	
+	document.getElementById('teamperformance').innerHTML = '<p>' + txt + '</p>';
+	
+    }
+    
+}
+
+
 /*
 console.log("race_names has length: " + race_names.length);
 console.log("driver_points has length: " + Object.keys(driver_points).length);
@@ -34,6 +170,52 @@ homogeneous(driver_prices, "driver_prices");
 console.log("team_prices has length: " + Object.keys(team_prices).length);
 homogeneous(team_prices, "team_prices");
 */
+
+var presumptive_number_of_races = Object.keys(driver_points).length;
+
+fillSelect('first_race', race_names.slice(0,presumptive_number_of_races), true);
+document.getElementById('first_race').selectedIndex = 0;
+fillSelect('last_race', race_names.slice(0,presumptive_number_of_races), true);
+document.getElementById('last_race').selectedIndex = presumptive_number_of_races - 1;
+
+document.getElementById('first_race').addEventListener('change', (event) => {
+    fillOptimal(event.target.selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('last_race').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, event.target.selectedIndex);
+});
+
+document.getElementById('2x_driver').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('second_driver').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('third_driver').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('fourth_driver').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('fifth_driver').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('first_team').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+document.getElementById('second_team').addEventListener('change', (event) => {
+    fillOptimal(document.getElementById('first_race').selectedIndex, document.getElementById('last_race').selectedIndex);
+});
+
+fillOptimal(0, presumptive_number_of_races - 1);
+
 
 var thetable = '<tr><th>&nbsp;</th>';
 var idx = 0;
@@ -191,6 +373,20 @@ async function construct_and_solve_linear_program(dpo, tpo, dpr, tpr, ri, pi, nd
     return rv;
 }
 
+function score_team(the2x, second, third, fourth, fifth, teamone, teamtwo, si, ei){
+    let rv = 0;
+    for (let i = si; i <= ei; i += 1){
+	rv += (2 * driver_points[the2x][i]);
+	rv += driver_points[second][i];
+	rv += driver_points[third][i];
+	rv += driver_points[fourth][i];
+	rv += driver_points[fifth][i];
+	rv += team_points[teamone][i];
+	rv += team_points[teamtwo][i];
+    }
+    return rv;
+}
+
 function score_team_from_result(r, the2x, dp, tp, si, ei, pp){
 
     var rv = 0;
@@ -253,6 +449,10 @@ function colorFromNormalizedValue(value) {
 function print_choice(res){
     console.log(Object.keys(driver_points).filter((k) => res.result.vars[k] == 1));
     console.log(Object.keys(team_points).filter((k) => res.result.vars[k] == 1));
+}
+
+function format_choice(res,two_x){
+    return '[' + Object.keys(driver_points).filter((k) => res.result.vars[k] == 1).map(x => x == two_x ? x + '(2x)' : x) + '] / [' + Object.keys(team_points).filter((k) => res.result.vars[k] == 1) + ']';
 }
 
 var optimals = Array(num_races);
