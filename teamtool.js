@@ -173,7 +173,7 @@ console.log("team_prices has length: " + Object.keys(team_prices).length);
 homogeneous(team_prices, "team_prices");
 */
 
-var presumptive_number_of_races = Object.keys(driver_points).length;
+var presumptive_number_of_races = driver_points[Object.keys(driver_points)[0]].length;
 
 fillSelect('first_race', race_names.slice(0,presumptive_number_of_races), true);
 document.getElementById('first_race').selectedIndex = 0;
