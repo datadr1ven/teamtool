@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-  <canvas id="canvas" width="400" height="400"></canvas>
+  <canvas id="canvas" width="980" height="980"></canvas>
   <script src="track.js"></script>
   <script src="racing_lines.js"></script>
   <script src="colors.js"></script>
@@ -20,8 +20,8 @@
     
     const track_len = track.length;
     
-    const canvas_width = 400;
-    const canvas_height = 400;
+    const canvas_width = 980;
+    const canvas_height = 980;
     let car_idx = 0;
     const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
     
@@ -41,14 +41,14 @@
 	    ctx.moveTo(x1, y1); 
 	    ctx.lineTo(x2, y2); 
 	    ctx.strokeStyle = "gray"; 
-	    ctx.lineWidth = 3; 
+	    ctx.lineWidth = 8; 
 	    ctx.stroke();
 	}
 
 	Object.keys(driver_colors).forEach( function(driver) {
 	    ctx.beginPath();
 	    ctx.strokeStyle = "#" + driver_colors[driver]; 
-            ctx.arc(racing_lines[driver][Math.floor(car_idx/20)][0], (-racing_lines[driver][Math.floor(car_idx/20)][1])+canvas_height, 3, 0, 2 * Math.PI);
+            ctx.arc(racing_lines[driver][Math.floor(car_idx/20)][0], (-racing_lines[driver][Math.floor(car_idx/20)][1])+canvas_height, 8, 0, 2 * Math.PI);
             ctx.stroke();
 	    if (Math.floor(car_idx/20) < racing_points-1){
 		car_idx += 1;
