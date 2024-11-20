@@ -146,7 +146,7 @@ async function fillOptimal(first_race, last_race){
 	    if (total_price <= 100.0){
 		const team_score = score_team(a,b,c,d,e,f,g,h,i);
 		txt += '<p>and scores <b>' + team_score + '</b> points</p>';
-		txt += '<p>which is <b>' + Math.round((team_score/max_results[0].result.z) * 100) + '%</b> of possible points</p>';
+		txt += '<p>which is <b>' + ((team_score/max_results[0].result.z) * 100).toFixed(2) + '%</b> of possible points</p>';
 	    } else {
 		txt += 'and thus <b>exceeds</b> price cap</p>';
 	    }
