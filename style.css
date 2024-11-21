@@ -1,3 +1,28 @@
+#cw {
+  position: fixed;
+  z-index: -1;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(0 0 0 / 5%);
+}
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+
 /* Style the navigation menu */
 .topnav {
   overflow: hidden;

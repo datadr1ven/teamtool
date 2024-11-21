@@ -7,11 +7,69 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
+      <canvas id="cw" width="980" height="980"></canvas>
+      <script src="track.js"></script>
+      <script src="racing_lines.js"></script>
+      <script src="colors.js"></script>
+  <script>
+    const canvas = document.getElementById('cw');
+    const ctx = canvas.getContext('2d');
     
-    <!-- Top Navigation Menu -->
+    
+    const track_len = track.length;
+    
+    const canvas_width = 980;
+    const canvas_height = 980;
+    let car_idx = 0;
+    const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
+    
+    function animate() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
+	for(let idx = 0; idx < track_len; idx += 1){
+	    
+	    const x1 = track[idx%track_len][0];
+	    const y1 = (-track[idx%track_len][1])+canvas_height;
+	    
+	    const x2 = track[(idx+1)%track_len][0];
+	    const y2 = (-track[(idx+1)%track_len][1])+canvas_height;
+	    
+	    ctx.beginPath();
+	    ctx.moveTo(x1, y1); 
+	    ctx.lineTo(x2, y2); 
+	    ctx.strokeStyle = "gray"; 
+	    ctx.lineWidth = 8; 
+	    ctx.stroke();
+	}
+
+	Object.keys(driver_colors).forEach( function(driver) {
+	    ctx.beginPath();
+	    ctx.strokeStyle = "#" + driver_colors[driver]; 
+            ctx.arc(racing_lines[driver][Math.floor(car_idx/20)][0], (-racing_lines[driver][Math.floor(car_idx/20)][1])+canvas_height, 8, 0, 2 * Math.PI);
+            ctx.stroke();
+	    if (Math.floor(car_idx/20) < racing_points-1){
+		car_idx += 1;
+	    }
+	});
+	
+        // Request the next frame
+        requestAnimationFrame(animate);
+    }
+    
+    // Start the animation
+    animate();
+  </script>
+
+    <!-- <canvas id="cw">Simple Grid Animation</canvas> ->
+	 <!-- Top Navigation Menu -->
+    
     <div class="topnav">
-      <a href="javascript:void(0);" class="active"><h1>Team Evaluator</h1></a>
+      <a href="javascript:void(0);" class="active">
+	<h1>Team Evaluator</h1>
+      </a>
       <!-- Navigation links (hidden by default) -->
+      <!-- <script src="./grid.js"></script> -->
       <div id="myLinks">
 	<a href="javascript:void(0);" onclick="showAbout();">About</a>
 	<a href="javascript:void(0);" onclick="showDisclaimer();">Disclaimer</a>
@@ -22,7 +80,7 @@
       </a>
     </div>
     <div class="content">
-      <p>This page currently uses 2024 points/price data, and reflects results through the Sao Paulo Grand Prix. Pick the window of races for which to calculate points and price, and then adjust team composition to evaluate performance</p>
+      <p>This page currently uses 2024 points/price data, and reflects results through the Mexico City Grand Prix. Pick the window of races for which to calculate points and price, and then adjust team composition to evaluate performance</p>
       <div id="intervalpicker" class="us-form darktest">
 	<table>
 	  <tr>
