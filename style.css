@@ -37,7 +37,7 @@ body {
 
 /* Style navigation menu links */
 .topnav a {
-  color: white;
+  color: #ff2800;
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
@@ -61,7 +61,7 @@ body {
 
 /* Style the active link (or home/logo) */
 .active {
-  background-color: #c4c0c0;
+    background-color: black;
   color: white;
 }
 
@@ -313,6 +313,7 @@ body {
 
 /* EXAMPLE STYLING */
 body {
+    font-style:          italic;
   font-family:          "FS Elliot Web Bold",avenir,sans-serif;
 }
 th,
@@ -333,7 +334,7 @@ th,
 .darktest td,
 .darktest th {
   color:                #fff;
-  background:           #666;
+  //background:           #666;
 }
 .error td,
 .error th {
