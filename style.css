@@ -333,7 +333,7 @@ th,
 }
 .darktest td,
 .darktest th {
-  color:                #fff;
+  //color:                #fff;
   //background:           #666;
 }
 .error td,
