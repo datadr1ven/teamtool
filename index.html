@@ -18,62 +18,76 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-      <canvas id="cw"></canvas>
-      <script src="track.js"></script>
-      <script src="racing_lines.js"></script>
-      <script src="colors.js"></script>
-  <script>
-    const canvas = document.getElementById('cw');
-    const ctx = canvas.getContext('2d');
     
-    const track_len = track.length;
- 
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
+    <canvas id="cw">
+    </canvas>
+    
+    <script src="track.js"></script>
+    <script src="racing_lines.js"></script>
+    <script src="colors.js"></script>
+    <script src="car.js"></script>
+    <script>
+      
+      const canvas = document.getElementById('cw');
+      const ctx = canvas.getContext('2d');
+      
+      const track_len = track.length;
+      
+      ctx.canvas.width  = window.innerWidth;
+      ctx.canvas.height = window.innerHeight;
+      
+      const multiplier = ctx.canvas.width / 980.0;
+      const vert_offset = 1500;
+      
+      let car_idx = 0;
+      const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
+      
+      function animate() {
+	  
+          // Clear the canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  for(let idx = 0; idx < track_len; idx += 1){
+	      
+	      const x1 = track[idx%track_len][0] * multiplier;
+	      const y1 = ((-track[idx%track_len][1])+vert_offset) * multiplier;
+	      
+	      const x2 = track[(idx+1)%track_len][0] * multiplier;
+	      const y2 = ((-track[(idx+1)%track_len][1])+vert_offset) * multiplier;
+	      
+	      ctx.beginPath();
+	      ctx.moveTo(x1, y1); 
+	      ctx.lineTo(x2, y2); 
+	      ctx.strokeStyle = "gray"; 
+	      ctx.lineWidth = 15; 
+	      ctx.stroke();
+	  }
+	  
+	  Object.keys(driver_colors).forEach( function(driver) {
+	      ctx.beginPath();
+	      
+	      if( Math.floor(car_idx/20) > 0 ){
+		  const rl_x = racing_lines[driver][Math.floor(car_idx/20)-1][0]*multiplier;
+		  const rl_y = ((-racing_lines[driver][Math.floor(car_idx/20)-1][1])+vert_offset)*multiplier;
+		  const rl_x_next = racing_lines[driver][Math.floor(car_idx/20)][0]*multiplier;
+		  const rl_y_next = ((-racing_lines[driver][Math.floor(car_idx/20)][1])+vert_offset)*multiplier;
 
-    const multiplier = ctx.canvas.width / 980.0;
-    const vert_offset = 1500;
-    
-    let car_idx = 0;
-    const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
-    
-    function animate() {
-        // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-	for(let idx = 0; idx < track_len; idx += 1){
-	    
-	    const x1 = track[idx%track_len][0] * multiplier;
-	    const y1 = ((-track[idx%track_len][1])+vert_offset) * multiplier;
-	    
-	    const x2 = track[(idx+1)%track_len][0] * multiplier;
-	    const y2 = ((-track[(idx+1)%track_len][1])+vert_offset) * multiplier;
-	    
-	    ctx.beginPath();
-	    ctx.moveTo(x1, y1); 
-	    ctx.lineTo(x2, y2); 
-	    ctx.strokeStyle = "gray"; 
-	    ctx.lineWidth = 8; 
-	    ctx.stroke();
-	}
+		  draw_car(ctx, rl_x, rl_y, Math.atan2(rl_x_next-rl_x, rl_y_next-rl_y), 3, driver_colors[driver]);
 
-	Object.keys(driver_colors).forEach( function(driver) {
-	    ctx.beginPath();
-	    ctx.strokeStyle = "#" + driver_colors[driver]; 
-            ctx.arc(racing_lines[driver][Math.floor(car_idx/20)][0]*multiplier, ((-racing_lines[driver][Math.floor(car_idx/20)][1])+vert_offset)*multiplier, 8, 0, 2 * Math.PI);
-            ctx.stroke();
-	    if (Math.floor(car_idx/20) < racing_points-1){
-		car_idx += 1;
-	    }
-	});
-	
-        // Request the next frame
-        requestAnimationFrame(animate);
-    }
+	      }
+	      
+	      if (Math.floor(car_idx/20) < racing_points-1){
+		  car_idx += 1;
+	      }
+	  });
+	  
+          // Request the next frame
+          requestAnimationFrame(animate);
+      }
+      
+      // Start the animation
+      animate();
+    </script>
     
-    // Start the animation
-    animate();
-  </script>
-
     <!-- <canvas id="cw">Simple Grid Animation</canvas> ->
 	 <!-- Top Navigation Menu -->
     
@@ -93,7 +107,7 @@
       </a>
     </div>
     <div class="content">
-      <p>This page currently uses 2024 points/price data, and reflects results through the Las Vegas Grand Prix. Pick the window of races for which to calculate points and price, and then adjust team to evaluate performance</p>
+      <p>This page currently uses 2024 points/price data, and reflects results through the Qatar Grand Prix. Pick the window of races for which to calculate points and price, and then adjust team to evaluate performance</p>
       <div id="intervalpicker" class="us-form darktest">
 	<table>
 	  <tr>
