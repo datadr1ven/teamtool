@@ -41,45 +41,35 @@
       
       let car_idx = 0;
       const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
-      
+
       function animate() {
 	  
           // Clear the canvas
           ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  ctx.beginPath();
+	  ctx.moveTo(track[0][0] * multiplier, ((-track[0][1])+vert_offset) * multiplier)
 	  for(let idx = 0; idx < track_len; idx += 1){
-	      
-	      const x1 = track[idx%track_len][0] * multiplier;
-	      const y1 = ((-track[idx%track_len][1])+vert_offset) * multiplier;
-	      
-	      const x2 = track[(idx+1)%track_len][0] * multiplier;
-	      const y2 = ((-track[(idx+1)%track_len][1])+vert_offset) * multiplier;
-	      
-	      ctx.beginPath();
-	      ctx.moveTo(x1, y1); 
-	      ctx.lineTo(x2, y2); 
+	      const x1 = track[(idx+1)%track_len][0] * multiplier;
+	      const y1 = ((-track[(idx+1)%track_len][1])+vert_offset) * multiplier;
+	      ctx.lineTo(x1, y1); 
 	      ctx.strokeStyle = "gray"; 
-	      ctx.lineWidth = 15; 
-	      ctx.stroke();
+	      ctx.lineWidth = 20; 
 	  }
-	  
+          ctx.stroke();
+
 	  Object.keys(driver_colors).forEach( function(driver) {
-	      ctx.beginPath();
-	      
-	      if( Math.floor(car_idx/20) > 0 ){
-		  const rl_x = racing_lines[driver][Math.floor(car_idx/20)-1][0]*multiplier;
-		  const rl_y = ((-racing_lines[driver][Math.floor(car_idx/20)-1][1])+vert_offset)*multiplier;
-		  const rl_x_next = racing_lines[driver][Math.floor(car_idx/20)][0]*multiplier;
-		  const rl_y_next = ((-racing_lines[driver][Math.floor(car_idx/20)][1])+vert_offset)*multiplier;
+                ctx.beginPath();
+		const rl_x = racing_lines[driver][car_idx][0]*multiplier;
+		const rl_y = ((-racing_lines[driver][car_idx][1])+vert_offset)*multiplier;
+		const rl_x_next = racing_lines[driver][(car_idx+1)%racing_points][0]*multiplier;
+		const rl_y_next = ((-racing_lines[driver][(car_idx+1)%racing_points][1])+vert_offset)*multiplier;
 
-		  draw_car(ctx, rl_x, rl_y, Math.atan2(rl_x_next-rl_x, rl_y_next-rl_y), 3, driver_colors[driver]);
-
-	      }
+		draw_car(ctx, rl_x, rl_y, Math.atan2(rl_x_next-rl_x, rl_y_next-rl_y), 2, driver_colors[driver]);
 	      
-	      if (Math.floor(car_idx/20) < racing_points-1){
-		  car_idx += 1;
-	      }
 	  });
 	  
+          car_idx = (car_idx+1)%racing_points;
+      
           // Request the next frame
           requestAnimationFrame(animate);
       }

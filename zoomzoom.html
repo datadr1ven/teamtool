@@ -9,10 +9,11 @@
     </style>
 </head>
 <body>
-  <canvas id="canvas" width="980" height="980"></canvas>
+  <canvas id="canvas" width="1020" height="1020"></canvas>
   <script src="track.js"></script>
   <script src="racing_lines.js"></script>
   <script src="colors.js"></script>
+  <script src="car.js"></script>
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -20,47 +21,22 @@
     
     const track_len = track.length;
     
-    const canvas_width = 980;
-    const canvas_height = 980;
+    const canvas_width = 1040;
+    const canvas_height = 1040;
     let car_idx = 0;
     const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
-    
-    function animate() {
-        // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-	
-	for(let idx = 0; idx < track_len; idx += 1){
-	    
-	    const x1 = track[idx%track_len][0];
-	    const y1 = (-track[idx%track_len][1])+canvas_height;
-	    
-	    const x2 = track[(idx+1)%track_len][0];
-	    const y2 = (-track[(idx+1)%track_len][1])+canvas_height;
-	    
-	    ctx.beginPath();
-	    ctx.moveTo(x1, y1); 
-	    ctx.lineTo(x2, y2); 
-	    ctx.strokeStyle = "gray"; 
-	    ctx.lineWidth = 8; 
-	    ctx.stroke();
-	}
 
-	Object.keys(driver_colors).forEach( function(driver) {
-	    ctx.beginPath();
-	    ctx.strokeStyle = "#" + driver_colors[driver]; 
-            ctx.arc(racing_lines[driver][Math.floor(car_idx/20)][0], (-racing_lines[driver][Math.floor(car_idx/20)][1])+canvas_height, 8, 0, 2 * Math.PI);
-            ctx.stroke();
-	    if (Math.floor(car_idx/20) < racing_points-1){
-		car_idx += 1;
-	    }
-	});
-	
-        // Request the next frame
-        requestAnimationFrame(animate);
-    }
+    draw_car(ctx, 100, 250, 0, 20, "3671C6");
+    draw_car(ctx, 300, 250, 0, 20, "F91536");
+    draw_car(ctx, 500, 250, 0, 20, "2293D1");
+    draw_car(ctx, 700, 250, 0, 20, "358C75");
+    draw_car(ctx, 900, 250, 0, 20, "6CD3BF");
+    draw_car(ctx, 100, 750, 0, 20, "F58020");
+    draw_car(ctx, 300, 750, 0, 20, "37BEDD");
+    draw_car(ctx, 500, 750, 0, 20, "B6BABD");
+    draw_car(ctx, 700, 750, 0, 20, "5E8FAA");
+    draw_car(ctx, 900, 750, 0, 20, "C92D4B");
     
-    // Start the animation
-    animate();
   </script>
 </body>
 </html>

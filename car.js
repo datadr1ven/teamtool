@@ -48,7 +48,7 @@ function draw_car(p_ctx, p_x, p_y, p_dir, p_size, p_color){
 	    p_ctx.fillStyle = "#" + p_color;
 	}
 	
-	p_ctx.lineWidth = 1;
+	p_ctx.lineWidth = 4;
 
 
 	starting_point = rotatePoint( {x: path[0][0], y: path[0][1]}, {x:10.5, y:4}, -(p_dir+(3*Math.PI/2)) );
