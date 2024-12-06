@@ -3,6 +3,7 @@
     <title>Team Evaluator</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-DV9BF3P4RZ"></script>
 	<script>
@@ -32,12 +33,14 @@
       const ctx = canvas.getContext('2d');
       
       const track_len = track.length;
+
+      let hide = {};
       
       ctx.canvas.width  = window.innerWidth;
       ctx.canvas.height = window.innerHeight;
       
       const multiplier = ctx.canvas.width / 980.0;
-      const vert_offset = 1500;
+      const vert_offset = 1200;
       
       let car_idx = 0;
       const racing_points = racing_lines[Object.keys(driver_colors)[0]].length;
@@ -64,12 +67,21 @@
 		const rl_x_next = racing_lines[driver][(car_idx+1)%racing_points][0]*multiplier;
 		const rl_y_next = ((-racing_lines[driver][(car_idx+1)%racing_points][1])+vert_offset)*multiplier;
 
-		draw_car(ctx, rl_x, rl_y, Math.atan2(rl_x_next-rl_x, rl_y_next-rl_y), 2, driver_colors[driver]);
+	      if ((rl_x == rl_x_next) && (rl_y == rl_y_next)){
+		  //console.log(rl_x + "," + rl_x_next);
+		  //console.log(rl_y + "," + rl_y_next);
+		  //console.log(driver);
+		  hide[driver] = true;
+	      }
+
+	      if( !hide[driver] ){
+		  draw_car(ctx, rl_x, rl_y, Math.atan2(rl_x_next-rl_x, rl_y_next-rl_y), 2.5, driver_colors[driver]);
+	      }
 	      
 	  });
 	  
           car_idx = (car_idx+1)%racing_points;
-      
+	  
           // Request the next frame
           requestAnimationFrame(animate);
       }
