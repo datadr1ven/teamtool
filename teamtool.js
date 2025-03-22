@@ -44,7 +44,7 @@ function extract_team(res, two_x){
 }
 
 async function fillOptimal(first_race, last_race){
-    if (last_race > first_race){
+    if (last_race >= first_race){
 	const race_indice = [...Array(last_race-first_race+1).keys()].map(x => x + first_race);
 	const ar = await construct_and_solve_linear_program(driver_points, team_points, driver_prices, team_prices, race_indice, race_indice[0], 5.0, 2.0, 100.0);
 	const max_results = ar[0];
