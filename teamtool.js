@@ -2,7 +2,7 @@ import GLPK from 'https://cdn.jsdelivr.net/npm/glpk.js@4.0.2/dist/index.js';
 
 const glpk = await GLPK();
 
-import {race_names, driver_points, team_points, driver_prices, team_prices} from './race_data.js';
+import {active_season, latest_race, race_names, driver_points, team_points, driver_prices, team_prices} from './race_data.js';
 
 function homogeneous(keyed_lists, descrip){
     var the_length = null;
@@ -169,6 +169,9 @@ homogeneous(driver_prices, "driver_prices");
 console.log("team_prices has length: " + Object.keys(team_prices).length);
 homogeneous(team_prices, "team_prices");
 */
+
+document.getElementById("active_season").innerHTML = active_season;
+document.getElementById("latest_race").innerHTML = latest_race;
 
 var presumptive_number_of_races = driver_points[Object.keys(driver_points)[0]].length;
 
