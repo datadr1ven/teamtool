@@ -13,13 +13,13 @@ jobs:
           args: -o statistics.html https://f1fantasytools.com/statistics
       - name: Process latest data
         run: |
-          cat statistics.html | python3 stats_to_race_data.py > new_race_data.js      
-      - name: List files in the repository
+          cat statistics.html | python3 stats_to_race_data.py > race_data.js      
+      - name: GIT add the potentially updated file
         run: |
-          ls -la ${{ github.workspace }}
-      - name: Compute checksum of old file
+          git add race_data.js
+      - name: GIT commit
         run: |
-          md5sum race_data.js
-      - name: Compute checksum of new file
+          git commit -m "race data updated by github action"
+      - name: GIT push
         run: |
-          md5sum new_race_data.js
+          git push
