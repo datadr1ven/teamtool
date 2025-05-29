@@ -16,3 +16,8 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: curl
+        uses: sozo-design/curl@v1.0.2
+        with:
+          args: https://httpbin.org/get
+      - run: echo "is there new output from job ${{ job.status}}?"
