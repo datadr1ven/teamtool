@@ -18,5 +18,8 @@ jobs:
       - name: Process latest race data
         run: |
           cat statistics.html | python3 stats_to_race_data.py > race_data.js      
+      - name: Remove our downloaded race data so as to not pollute repo
+        run: |
+          rm statistics.html
       - name: Commit any changes back to repo
         uses: stefanzweifel/git-auto-commit-action@v5
