@@ -144,5 +144,6 @@ for line in sys.stdin.readlines():
             e_c_pr[k] = list(map(lambda x: constructor_prices[k]['%d' % (x+1)], range(len(v))))
         print('export const team_points = %s;' % e_c_po)
         print('export const team_prices = %s;' % e_c_pr)
+        print('export const nothing_burger = 5;')
 
 
