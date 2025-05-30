@@ -1,6 +1,9 @@
 name: update race data
 run-name: pull results and reorganize data for our platform
-on: [push]
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 1 * * *'
 jobs:
   Update-Race-Data:
     runs-on: ubuntu-latest
