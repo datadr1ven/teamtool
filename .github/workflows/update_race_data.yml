@@ -1,0 +1,28 @@
+name: update race data
+run-name: pull results and reorganize data for our platform
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 1 * * *'
+jobs:
+  Update-Race-Data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Download latest race data
+        uses: sozo-design/curl@v1.0.2
+        with:
+          args: -o statistics.html https://f1fantasytools.com/statistics
+      - name: Process latest race data
+        run: |
+          cat statistics.html | python3 stats_to_race_data.py > race_data.js      
+      - name: Remove our downloaded race data so as to not pollute repo
+        run: |
+          rm statistics.html
+      - name: Commit any changes back to repo
+        uses: stefanzweifel/git-auto-commit-action@v5
