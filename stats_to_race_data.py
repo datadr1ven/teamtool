@@ -63,7 +63,10 @@ def print_constructor_prices(constructor_prices):
 
 for line in sys.stdin.readlines():
         cnt = 1
-        idx = line.index('seasonResult') - 2
+        try:
+            idx = line.index('seasonResult') - 2
+        except:
+            break
         while cnt > 0:
             if line[idx] == "{":
                 cnt += 1
